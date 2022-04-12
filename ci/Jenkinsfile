@@ -22,5 +22,14 @@ pipeline {
                 sh "./ci/scripts/deliver.sh"
             }
         }
+        stage("Package") {
+            steps {
+                withCredentials([string(credentialsId: "DockerHub", variable: "TOKEN")]) {
+                    sh "docker login -u 'j13jha' -p '$TOKEN' docker.io"
+                    sh "docker build -t myapp:latest --tag j13jha/acit4850_samplejava:myapp ."
+                    sh "docker push j13jha/acit4850_samplejava:myapp"
+                }
+            }
+        }
     }
 }
