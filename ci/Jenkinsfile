@@ -1,5 +1,10 @@
 pipeline {
     agent any
+
+    parameters {
+        booleanParam(defaultValue: false, description: "Deploy the App", name: "DEPLOY")
+    }
+
     stages {
         stage("Build") {
             steps {
@@ -17,9 +22,11 @@ pipeline {
             }
         }
         stage("Deliver") {
+            when {
+                expression { params.DEPLOY }
+            }
             steps {
-                sh "chmod +x ci/scripts/deliver.sh"
-                sh "./ci/scripts/deliver.sh"
+                sh "docker run mpapp:latest"
             }
         }
         stage("Package") {
