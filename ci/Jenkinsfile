@@ -26,7 +26,7 @@ pipeline {
                 expression { params.DEPLOY }
             }
             steps {
-                sh "docker run mpapp:latest"
+                sh "docker run myapp:latest"
             }
         }
         stage("Package") {
